@@ -16,7 +16,29 @@ class Money {
 }
 
 
+class Profolio {
+    constructor() {
+        this.moneys=[];
+    }
+
+    add(... moneys) {
+        this.moneys = this.moneys.concat(moneys);
+    }
+
+    evaluate(currency) {
+        let total = this.moneys.reduce((sum, money)=>{
+           return sum+money.amount;
+        }, 0);
+        return new Money(total, currency);
+    }
+}
+
 class testMoneyModule {
+    RunAllTest() {
+        this.dollar_should_be_able_to_do_times_calculate_with_currency()
+        this.dollar_should_be_able_to_do_divide_calculate_with_currency()
+        this.dollar_should_be_able_to_do_add_calculate_with_same_currency();
+    }
 
     dollar_should_be_able_to_do_times_calculate_with_currency() {
         var eurFiver = new Money(5, "EUR");
@@ -32,9 +54,13 @@ class testMoneyModule {
         assert.deepStrictEqual(krwFiver, expectedKrwFiver);
     }
 
-    RunAllTest() {
-        this.dollar_should_be_able_to_do_times_calculate_with_currency()
-        this.dollar_should_be_able_to_do_divide_calculate_with_currency()
+
+    dollar_should_be_able_to_do_add_calculate_with_same_currency() {
+        let usdFiver = new Money(5, "USD");
+        let usdTenner = new Money(10, "USD");
+        let profolio = new Profolio();
+        profolio.add(usdFiver, usdTenner);
+        assert.deepStrictEqual(profolio.evaluate("USD"), new Money(15, "USD"));
     }
 }
 
